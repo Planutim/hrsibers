@@ -18,6 +18,9 @@
               <li class="nav-item">
                   <a class='nav-link' href="/all">All</a>
               </li>
-            </ul>   
+              <li class="nav-item">
+                  <a class='nav-link ml-auto' href="/logout">Logout</a>
+              </li>
+            </ul>
       </nav>
     </header>

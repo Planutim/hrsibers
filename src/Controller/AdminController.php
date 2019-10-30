@@ -15,22 +15,27 @@ class AdminController{
     $this->User = new User();
   }
 
-  public function index(){      //serve main page
+  public function index(){     
     
-    return $this->oUtil->getView('index');
+    return $this->oUtil->getView('index');  //serve main page
   }
 
-  public function login(){
-    if(isset($_POST['admin_login'],$_POST['admin_password'])){    //serve login page
+  public function login(){ //admin login
+    if(isset($_POST['admin_login'],$_POST['admin_password'])){  //if post data given  
       $login = $_POST['admin_login'];
       $password = $_POST['admin_password'];
       
       if(Auth::login($login,$password)){
-
+        return $this->oUtil->getView('index');
       }
-    }else{
+    }else{  //serve login page
       return $this->oUtil->getView('login');
     }
+  }
+
+  public function logout(){
+    Auth::destroy();
+    header("Location: /");
   }
 
   public function addUser(){      //Add a user

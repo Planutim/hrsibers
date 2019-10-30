@@ -13,6 +13,8 @@ class Router{
 
     $Controller = new AdminController();
     $uri = $_SERVER['REQUEST_URI'];
+    
+
 
     if(Auth::isLoggedIn()){
       try{
@@ -33,6 +35,8 @@ class Router{
             $Controller->checkLogin();break;
           case '/error':
             $Controller->error('routetest');break;
+          case '/logout':
+            $Controller->logout();break;
           default:
           $Controller->notFound();break;
         }

@@ -1,4 +1,4 @@
-<form method="post" action="/">
+<form method="post" action="/login">
   <div class="">
     <label for="login">Username</label>
     <input type="text" name="admin_login" id="admin_login" required>
