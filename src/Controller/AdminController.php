@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Engine\Util;
 use App\Model\User;
+use App\Engine\Auth;
 
 class AdminController{
 
@@ -20,8 +21,15 @@ class AdminController{
   }
 
   public function login(){
-    if(isset($_POST['admin_login'])){     //serve login page
+    if(isset($_POST['admin_login'],$_POST['admin_password'])){    //serve login page
+      $login = $_POST['admin_login'];
+      $password = $_POST['admin_password'];
+      
+      if(Auth::login($login,$password)){
 
+      }
+    }else{
+      return $this->oUtil->getView('login');
     }
   }
 
@@ -112,15 +120,18 @@ class AdminController{
       $result = $this->User->checkLogin($_GET['login']);
 
       if($result){
-        $message= 'its not taken!';
+        $message= true;
       }
       else{
-        $message = 'its taken!';
+        $message = false;
       }
       echo $message;
-      return;
+      return $message;
     }
   }
 
 
+  public function notFound(){
+    return $this->oUtil->getView('notFound');
+  }
 }

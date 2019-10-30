@@ -3,7 +3,7 @@
       <form action ='#' id='secondaryform' onsubmit='return false;'>
           <input type="text" class="form-control" id="wtf">
       </form>
-      <button class="btn btn-outline-secondary px-5 mb-2" onclick="checkLogin()">test</button>
+      <button class="btn btn-outline-secondary px-5 mb-2" onclick="checkLogin1()">test</button>
       <a href='/check?login=vasya'>test</a>
       <p id="loginresult" class="w-25 pt-3"></p>
       </div>
@@ -17,7 +17,7 @@
         event.stopPropagation();
         return false;
       }
-      function checkLogin(){
+      function checkLogin1(){
         var value = $('#wtf').val();
 
         let req = new XMLHttpRequest()

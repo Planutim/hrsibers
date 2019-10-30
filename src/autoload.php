@@ -6,9 +6,11 @@ define('ROOT', __DIR__.'/');
 
 use App\Engine\Loader;
 use App\Engine\Router;
-use App\Controller\AdminController as TA;
+use App\Engine\Auth;
 
 
 Loader::run();
+
 Router::run();
+Auth::run();
 

@@ -6,7 +6,7 @@
   <button class="btn btn-outline-secondary my-2" onclick="autocomplete()">Autocomplete</button>
 </div>
 <div class="container">
-  <form action="" method="POST">
+  <form action="" method="POST" onsubmit="return checkLogin()">
     <div class="form-group">
       <label for="login">Login</label>
       <input type="text" class="form-control" required id="login" name="login" value="<?=htmlspecialchars($user['login'])?>">
@@ -47,6 +47,24 @@
 </div>
 
 <script>
+  function checkLogin(event){
+
+    req = new XMLHttpRequest();
+    let loginvalue = $('#login').val();
+
+    req.open('GET', '/check?login='+loginvalue, false);
+    req.send();  
+    req.onload = function(){
+      if(this.responseText == 1){
+        return true;
+      }
+      else{
+        return false;
+      }
+    }
+
+    return false;
+  }
   function autocomplete(){
     $('#login').val(uuidv4('login'));
     $('#password').val(uuidv4('password'));
