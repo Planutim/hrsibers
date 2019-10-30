@@ -1,0 +1,26 @@
+html{
+  position: relative;
+  min-height: 100%;
+}
+body{
+  margin-bottom: 60px;
+}
+footer{
+  position: absolute;
+  bottom: 0;
+  height: 60px;
+  background-color: #d3f3c3;
+  width: 100%;
+}
+
+.navbar-nav>li{
+  margin-left: 10px;
+}
+
+.dark{
+  background-color: #000;
+}
+
+.error{
+  color: darkred;
+}
