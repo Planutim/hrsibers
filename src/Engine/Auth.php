@@ -39,3 +39,5 @@ class Auth{
     session_destroy();
   }
 }
+
+//todo many
