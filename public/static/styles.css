@@ -24,3 +24,12 @@ footer{
 .error{
   color: darkred;
 }
+
+.logoutlink{
+  text-decoration: none;
+  color: #777;
+}
+.logoutlink:hover{
+  text-decoration: none;
+  color: #555;
+}

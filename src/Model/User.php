@@ -70,7 +70,7 @@ class User{
         $stmt->execute();
       }
       catch(\PDOException $e){
-        echo $e->getMessage();
+        // return $this->oHelper->returnWithErrors($userData, $errors);;
       }
     } else //if validate errors
     {

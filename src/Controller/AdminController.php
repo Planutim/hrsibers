@@ -26,7 +26,11 @@ class AdminController{
       $password = $_POST['admin_password'];
       
       if(Auth::login($login,$password)){
+        header("Location: /");
         return $this->oUtil->getView('index');
+      }
+      else{
+        return $this->oUtil->getView('login');
       }
     }else{  //serve login page
       return $this->oUtil->getView('login');
@@ -49,9 +53,10 @@ class AdminController{
           }
         }
         catch(\PDOException $e){
-          // return $this->oUtil->getView('error', $e->getMessage);
+          return $this->oUtil->getView('error', $e->getMessage);
         }
 
+      header("Location:/");
       return $this->oUtil->getView('index');
     }else{ //if post data is not set meaning you are to register 
       return $this->oUtil->getView('form');

@@ -12,7 +12,7 @@ class Auth{
     session_start();
 
     if(!self::isLoggedIn()){
-      self::destroy();
+      // self::destroy();
     }
   }
 

@@ -14,19 +14,23 @@ class UserHelper{
   }
 
   public function checkLogin($login){
-    $stmt = $this->oDb->prepare('SELECT COUNT(login) from users WHERE login=:login');
+    $stmt = $this->oDb->prepare('SELECT COUNT(*) from users WHERE login=:login');
 
     $stmt->bindValue(':login', $login);
     $stmt->execute();
     
-    $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+    $result = null;
+    try{
+      $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+    }catch(\PDOException $e){
+      return false;
+    }
 
     $key = array_key_first($result);
-    if($result[$key]===1){
+    if(intval($result[$key])===1) // if count(login) === 1
       return false;
-    }else{
-      return true;
-    }
+
+    return true;
   }
 
   public function validate($userData)
@@ -34,13 +38,16 @@ class UserHelper{
     $errors = [];
     $isLoginUnique=null;
 
-    if(isset($userData['login'])){
-      $isLoginUnique = $this->checkLogin($userData['login']);
+    if(!isset($userData['login']) || mb_strlen($userData['login'])>50){
+      array_push($errors,'login');
     } //login validate
-
-    if(!$isLoginUnique){
-      array_push($errors, 'login'); 
+    else{
+      $isLoginUnique = $this->checkLogin($userData['login']);
+      if(!$isLoginUnique){
+        array_push($errors, 'login'); 
+      }
     }
+
     if(!isset($userData['password']) || mb_strlen($userData['password'])>50){ //password validate
       array_push($errors, 'password'); 
     }

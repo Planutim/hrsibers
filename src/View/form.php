@@ -6,9 +6,11 @@
   <button class="btn btn-outline-secondary my-2" onclick="autocomplete()">Autocomplete</button>
 </div>
 <div class="container">
-  <form action="" method="POST" onsubmit="return checkLogin()">
+  <div class="row d-flex justify-content-center">
+    <div class="col-md-6">
+  <form action="" method="POST">
     <div class="form-group">
-      <label for="login">Login</label>
+      <label for="login">Username</label>
       <input type="text" class="form-control" required id="login" name="login" value="<?=htmlspecialchars($user['login'])?>">
     </div>
     
@@ -18,25 +20,25 @@
     </div>
 
     <div class="form-group">
-      <label for="firstName">Имя</label>
+      <label for="firstName">First Name</label>
       <input type="text" class="form-control" required id="firstName" name="firstName" value="<?=htmlspecialchars($user['firstName'])?>">
     </div>
 
     <div class="form-group">
-      <label for="lastName">Фамилия</label>
+      <label for="lastName">Last Name</label>
       <input type="text" class="form-control" required id="lastName" name="lastName" value="<?=htmlspecialchars($user['lastName'])?>">
     </div>
 
     <div class="form-group">
-      <label for="sex">Пол</label>
+      <label for="sex">Sex</label>
       <select class="form-control" required id="sex" name="sex">
-          <option value="male" <?=$user['sex']==='male'?'selected':''?>>Мужской</option>
-          <option value="female" <?=$user['sex']==='female'?'selected':''?>>Женский</option>
+          <option value="male" <?=$user['sex']==='male'?'selected':''?>>Male</option>
+          <option value="female" <?=$user['sex']==='female'?'selected':''?>>Female</option>
         </select>
     </div>
 
     <div class="form-group">
-      <label for="birthDate">Дата рождения</label>
+      <label for="birthDate">Date of Birth</label>
       <input type="date" min='1900-01-01' max='2019-01-01' class="form-control" required id="birthDate" name="birthDate" value="<?=$user['birthDate']?>">
     </div>
 
@@ -45,32 +47,35 @@
     <button type="submit" class="btn btn-secondary">Submit</button>
   </form>
 </div>
+</div>
+</div>
 
 <script>
-  function checkLogin(event){
+  async function  checkLogin(event){
 
     req = new XMLHttpRequest();
     let loginvalue = $('#login').val();
 
     req.open('GET', '/check?login='+loginvalue, false);
-    req.send();  
-    req.onload = function(){
+     req.send();
+     req.onload = await function(){
       if(this.responseText == 1){
+        alert('works!');
         return true;
       }
       else{
-        return false;
+        alert('now working!')
+        
       }
     }
-
     return false;
   }
   function autocomplete(){
     $('#login').val(uuidv4('login'));
     $('#password').val(uuidv4('password'));
-    $('#firstName').val('vitaly');
-    $('#lastName').val('ivanov');
-    $('#sex').val('male');
+    $('#firstName').val('inna');
+    $('#lastName').val('petrova');
+    $('#sex').val('female');
     $('#birthDate').val('2000-01-01');
   }
 
