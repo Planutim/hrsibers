@@ -1,7 +1,6 @@
 <?php
 
 require 'Engine/Loader.php';
-require 'test.php';
 
 define('ROOT', __DIR__.'/');
 

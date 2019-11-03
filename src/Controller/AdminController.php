@@ -126,8 +126,9 @@ class AdminController{
   public function allUsers(){
     $options = [];
     if(isset($_GET['sortBy'])){
-      if(in_array($_GET['sortBy'],array('login','id'))){
+      if(in_array($_GET['sortBy'],array('login','id','firstName','lastName'))){
         $options['sortBy'] = $_GET['sortBy'];
+
       }
     }
 
@@ -155,28 +156,6 @@ class AdminController{
   public function error($message){
 
     return $this->oUtil->getView('error',$message);
-  }
-
-  public function checkLogin(){     //
-    if(isset($_GET['login'])){
-      $result = $this->User->checkLogin($_GET['login']);
-
-      if($result){
-        $message= true;
-      }
-      else{
-        $message = false;
-      }
-      echo $message;
-      return $message;
-    }
-  }
-
-
-  public function test(){
-    foreach($_GET as $key=>$val){
-      echo "$key => $val";
-    }
   }
 
   public function notFound(){

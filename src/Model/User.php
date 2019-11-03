@@ -72,6 +72,7 @@ class User{
     foreach($users as $key=>$user){
       $users[$key]['number'] = $key+$offset+1;
     }
+
     return $users;
   }
 
@@ -85,11 +86,11 @@ class User{
       $transformed = $this->oHelper->transform($userData,true);
       //prepare SQL query
       $stmt = $this->oDb->prepare(
-        "INSERT INTO users(UID, login, password, firstName, lastName, sex, birthDate) 
-        VALUES( :UID, :login, :password, :firstName, :lastName, :sex, :birthDate);"
+        "INSERT INTO users(login, password, firstName, lastName, sex, birthDate) 
+        VALUES(:login, :password, :firstName, :lastName, :sex, :birthDate);"
       );
       
-      $stmt->bindValue('UID',$transformed['UID']);
+      // $stmt->bindValue('UID',$transformed['UID']);
       $stmt->bindValue('login',$transformed['login']);
       $stmt->bindValue('password',$transformed['password']);
       $stmt->bindValue('firstName',$transformed['firstName']);
@@ -97,10 +98,13 @@ class User{
       $stmt->bindValue('sex',isset($transformed['sex'])?$transformed['sex']:null);
       $stmt->bindValue('birthDate',$transformed['birthDate']);
 
+      echo $stmt->queryString;
 
+      
       //check for exceptions
       try{
         $stmt->execute();
+        
 
       }
       catch(\PDOException $e){

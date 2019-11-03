@@ -64,6 +64,7 @@
               <form id="pagination" action="/" method="GET">
                 <input type="hidden" id="page" name="page" value="1">
                 <input type="hidden" id="sortBy" disabled name="sortBy" value="">
+                <input type="hidden" id="asc" disabled name="asc" value="asc">
     
                     <select class="form-control " id='limit' name="limit">
                         <option value="5">5</option>

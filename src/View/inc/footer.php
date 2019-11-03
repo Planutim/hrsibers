@@ -5,14 +5,20 @@
     
     <script>
       document.addEventListener('DOMContentLoaded',()=>{
+
         params = getQuery();
         if(!$.isEmptyObject(params)){
+          
           for(let key in params){
             document.getElementById(key).value = params[key];
           }
+
         }
-        if(params['sortBy']!==null)
+        if(typeof params['sortBy']!=='undefined')
           $('#sortBy').prop('disabled', false);
+          // $('#asc').prop('disabled',false);
+
+          // $('#asc').val($('#asc').val()==='asc'?'desc':'asc')
       })
 
       function goTo(where){
