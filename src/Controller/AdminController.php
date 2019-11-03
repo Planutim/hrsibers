@@ -9,6 +9,7 @@ use App\Engine\Auth;
 class AdminController{
 
   private $oUtil, $User;
+  private $count=0;
 
   public function __construct(){
     $this->oUtil = new Util();
@@ -17,7 +18,7 @@ class AdminController{
 
   public function index(){     
     
-    return $this->oUtil->getView('index');  //serve main page
+    return $this->allusers();
   }
 
   public function login(){ //admin login
@@ -27,7 +28,7 @@ class AdminController{
       
       if(Auth::login($login,$password)){
         header("Location: /");
-        return $this->oUtil->getView('index');
+        // return $this->oUtil->getView('index');
       }
       else{
         return $this->oUtil->getView('login');
@@ -57,7 +58,7 @@ class AdminController{
         }
 
       header("Location:/");
-      return $this->oUtil->getView('index');
+      // return $this->oUtil->getView('index');
     }else{ //if post data is not set meaning you are to register 
       return $this->oUtil->getView('form');
     }
@@ -72,14 +73,15 @@ class AdminController{
         if($errorData){
           return $this->oUtil->getView('form', $errorData);
         }else{
-          return $this->oUtil->getView('index');
+          // return $this->oUtil->getView('index');
+          header("Location: /");
         }
       }
       catch(\PDOException $e){
         return $this->oUtil->getView('error',$e->getMessage);
       }
 
-    }else if(isset($_GET['id'])){
+    }else if(isset($_GET['id'])&&intval($_GET['id'])){
       
       $editUser = $this->User->getOneById($_GET['id']);
 
@@ -89,6 +91,17 @@ class AdminController{
     }
 
     return $this->oUtil->getView('error','Something wrong happened');
+  }
+
+  public function deleteUser(){
+    if(isset($_GET['id'])&&intval($_GET['id'])){
+      if($this->User->delete($_GET['id'])){
+        header("Location: /");
+      }
+      else{
+        header("Location: /error");
+      }
+    }
   }
 
   public function userInfo(){
@@ -111,13 +124,32 @@ class AdminController{
   }
 
   public function allUsers(){
-    $usersArray = $this->User->getAll();
+    $options = [];
+    if(isset($_GET['sortBy'])){
+      if(in_array($_GET['sortBy'],array('login','id'))){
+        $options['sortBy'] = $_GET['sortBy'];
+      }
+    }
+
+    if(isset($_GET['asc'])){
+      if(in_array($_GET['asc'],array('asc','desc')))
+        $options['ascdesc'] = $_GET['asc'];
+    }
+
+    if(isset($_GET['page'])){
+      if(is_numeric($_GET['page'])){
+        $options['page'] = $_GET['page'];
+      }
+    }
+
+    if(isset($_GET['limit'])){
+      if(is_numeric($_GET['limit']))
+        $options['limit'] = $_GET['limit'];
+    }
+
+    $usersArray = $this->User->getAll($options);
 
     return $this->oUtil->getView('index', $usersArray);
-  }
-
-  public function test(){
-    var_dump($_POST);
   }
 
   public function error($message){
@@ -140,6 +172,12 @@ class AdminController{
     }
   }
 
+
+  public function test(){
+    foreach($_GET as $key=>$val){
+      echo "$key => $val";
+    }
+  }
 
   public function notFound(){
     return $this->oUtil->getView('notFound');

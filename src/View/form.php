@@ -44,8 +44,13 @@
 
     <input type="hidden" value="<?=$user['id']?>">
 
-    <button type="submit" class="btn btn-secondary">Submit</button>
+    <div class="row d-flex justify-content-between">
+        <button type="submit" class="btn btn-secondary m-3">Submit</button>
+
+        <button class='btn btn-outline-secondary m-3' onclick="history.go(-1);">Back </button>
+    </div>
   </form>
+
 </div>
 </div>
 </div>

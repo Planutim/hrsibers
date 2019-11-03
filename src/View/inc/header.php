@@ -15,9 +15,6 @@
               <li class="nav-item">
                   <a class="nav-link" href="/add">Add</a>
               </li>
-              <li class="nav-item">
-                  <a class='nav-link' href="/all">All</a>
-              </li>
             </ul>
             <a class='logoutlink' href="/logout">Logout</a>
       </nav>

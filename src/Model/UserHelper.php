@@ -8,6 +8,7 @@ use App\Engine\Db;
 class UserHelper{
   
   private $oDb;
+  private $orderDesc=false;
 
   public function __construct(){
     $this->oDb = new Db();

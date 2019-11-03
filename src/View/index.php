@@ -2,20 +2,36 @@
 
     <main>
       <div class="container text-center">
+        <div class="">
+          <div class="">
       <?php if (isset($data)): ?>
-        <table class='table'> 
+        <table class='table border-bottom'> 
           <thead>
             <tr class='border-right border-left'>
-                <th scope="col" class='border-right'>Username</th>
+                <th scope="col" class='border-right'>
+                  #
+                </th>
+                <th scope="col" class='border-right'>
+                  <a href='?sortBy=login' class="nodecor">Username</a>
+                </th>
+                <th scope="col" class='border-right'>
+                    <a href='?sortBy=firstName' class="nodecor">First Name</a>
+                  </th>
+                  <th scope="col" class='border-right'>
+                      <a href='?sortBy=lastName' class="nodecor">Last Name</a>
+                    </th>
                 <th scope="col">Info</th>
                 <th scope="col">Edit</th>
                 <th scope="col">Delete</th>
               </tr>
           </thead>
-          <tbody>
-          <?php foreach($data as $user): ?>
+          <tbody id="users">
+          <?php foreach($data as $key=>$user): ?>
             <tr class='border-left border-right'>
+              <td class='border-right'><?=$user['number']?></td>
               <td class='border-right'><?=$user['login']?></td>
+              <td class='border-right'><?=$user['firstName']?></td>
+              <td class='border-right'><?=$user['lastName']?></td>
               <td >
                 <a href="/profile?id=<?=$user['id']?>">
                   
@@ -31,7 +47,7 @@
                 </svg></a>
               </td>
               <td>
-                <a href='#'><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 8 8">
+                <a href="/delete?id=<?=$user['id']?>"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 8 8">
                   <path d="M2 0l-2 3 2 3h6v-6h-6zm1.5.78l1.5 1.5 1.5-1.5.72.72-1.5 1.5 1.5 1.5-.72.72-1.5-1.5-1.5 1.5-.72-.72 1.5-1.5-1.5-1.5.72-.72z" transform="translate(0 1)" />
                 </svg></a>
               </td>
@@ -40,6 +56,25 @@
           </tbody>
         </table>
       <?php endif?>
+      </div>
+      <div class="row">
+          <div class="col-md-12 d-flex justify-content-between">
+    
+              <button class="btn btn-primary" onclick="goTo('prev')">Prev</button>
+              <form id="pagination" action="/" method="GET">
+                <input type="hidden" id="page" name="page" value="1">
+                <input type="hidden" id="sortBy" disabled name="sortBy" value="">
+    
+                    <select class="form-control " id='limit' name="limit">
+                        <option value="5">5</option>
+                        <option value="10">10</option>
+                        <option value="15">15</option>
+                      </select>
+              </form>
+              <button class="btn btn-primary" onclick="goTo('next')">Next</button>    
+            </div>
+          </div>
+        </div>
       </div>
     </main>
 

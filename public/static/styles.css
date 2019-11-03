@@ -33,3 +33,8 @@ footer{
   text-decoration: none;
   color: #555;
 }
+
+.nodecor, .nodecor:hover{
+  text-decoration: none;
+  color: inherit;
+}

@@ -4,53 +4,72 @@ namespace App\Engine;
 
 use App\Controller\AdminController;
 use App\Engine\Auth;
+require_once __DIR__ . '/traits/Singleton.trait.php';
+
 
 class Router{
   
-  private static $Controller;
+  use traits\Singleton;
 
-  public static function run(){
+  private $Controller;
 
-    $Controller = new AdminController();
-    $uri = $_SERVER['REQUEST_URI'];
+  public function __construct(){
+    $this->Controller = new AdminController();
+  }
+  public function run(){
+
+    $uriWithQuery = $_SERVER['REQUEST_URI'];
     
-
+    $uriArray = preg_split('~\?~',$uriWithQuery);
+    $uri = $uriArray[0];
 
     if(Auth::isLoggedIn()){
       try{
         switch($uri){
           case '/':
-            $Controller->index();break;
-          case '/test':
-            $Controller->test();break;
-          case '/add':
-            $Controller->addUser();break;
-          case preg_match('/\/edit\?id=.+/',$uri)?true:false: // /edit?id=blabla
-            $Controller->editUser();break;
-          case preg_match('/\/profile\?id=.+/',$uri)?true:false: // /profile?id=blabla
-            $Controller->userInfo();break;
           case '/all':
-            $Controller->allUsers();break;
-          case preg_match('/\/check\?login=.+/',$uri)?true:false: 
-            $Controller->checkLogin();break;
+            $this->Controller->allUsers();break;
+
+          case '/test':
+            $this->Controller->test();break;
+
+          case '/add':
+            $this->Controller->addUser();break;
+            
+          case '/edit':
+            $this->Controller->editUser();break;
+
+          case '/delete': //delete?id=blabla
+            $this->Controller->deleteUser();break;
+
+          case '/profile': // /profile?id=blabla
+            $this->Controller->userInfo();break;
+
+          case '/check':
+            $this->Controller->checkLogin();break;
+          case '/test':
+            $this->Controller->test();break;
           case '/error':
-            $Controller->error('routetest');break;
+            $this->Controller->error('routetest');break;
+
           case '/logout':
-            $Controller->logout();break;
+            $this->Controller->logout();break;
+
           default:
-          $Controller->notFound();break;
+          $this->Controller->notFound();break;
         }
       }
       catch(Exception $e){
-        $Controller->error($e->getMessage);
+        $this->Controller->error($e->getMessage);
       }
     }else{
       if($uri!=='/login'){
         header("Location: /login");
       }
       else{
-        $Controller->login();
+        $this->Controller->login();
       }
     }
   }
+ 
 }

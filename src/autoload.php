@@ -1,6 +1,7 @@
 <?php
 
 require 'Engine/Loader.php';
+require 'test.php';
 
 define('ROOT', __DIR__.'/');
 
@@ -14,5 +15,6 @@ Loader::run();
 
 Auth::run();
 
-Router::run();
+Router::getInstance()->run();
+
 

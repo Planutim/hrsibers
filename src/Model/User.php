@@ -35,14 +35,47 @@ class User{
   }
 
 
-  public function getAll(){
-    $stmt = $this->oDb->query(
-      "SELECT * FROM users"
-    );
+  public function getAll($options=null){
+
+    $limit = isset($options['limit'])?$options['limit']:5;
+
+    $page = @(int)$options['page'];
+    
+    $offset = 0;
+
+    if(isset($page)&&$page>0){
+      $numPages = intval($this->selectAllCount() / $limit) + 1;
+      if($page<=$numPages){
+        $offset = ($page-1) * $limit;
+      }else{
+        $offset = ($numPages-1) * $limit;
+      }
+    }
+    
+    $sortBy = isset($options['sortBy'])?' ORDER BY '. $options['sortBy']:'';
+
+    $ascdesc = isset($options['ascdesc'])?$options['ascdesc']:'';
+
+    $query = "SELECT * FROM users  $sortBy $ascdesc LIMIT $limit OFFSET $offset";
+    
+    $defaultQuery = 'SELECT * FROM users';
+
+    try{
+      $stmt = $this->oDb->query($query);
+    }
+    catch(\PDOException $e){
+      echo $e->getMessage();
+      return;
+    }
 
     $users = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+    foreach($users as $key=>$user){
+      $users[$key]['number'] = $key+$offset+1;
+    }
     return $users;
   }
+
+
 
   public function add($userData){
     $errors = $this->oHelper->validate($userData);
@@ -68,9 +101,10 @@ class User{
       //check for exceptions
       try{
         $stmt->execute();
+
       }
       catch(\PDOException $e){
-        // return $this->oHelper->returnWithErrors($userData, $errors);;
+        return $this->oHelper->returnWithErrors($userData, $errors);
       }
     } else //if validate errors
     {
@@ -112,10 +146,25 @@ class User{
     return false;
   }
 
+  public function delete($id){
+    $stmt = $this->oDb->prepare('DELETE FROM users where id=:id');
 
-
-  public function checkLogin($login){
-    return $this->oHelper->checkLogin($login);
+    $stmt->bindValue(':id',$id);
+    try{
+      $stmt->execute();
+    }
+    catch(\PDOException $e){
+      return false;
+    }
+    return true;
   }
 
+
+
+
+  public function selectAllCount(){
+    $stmt = $this->oDb->query('SELECT COUNT(*) FROM users');
+    $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+    return (int)$result[array_key_first($result)];
+  }
 } 
