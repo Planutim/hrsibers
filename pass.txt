@@ -1,2 +1,7 @@
 LOGIN = admin
 PASS = 123
+
+apache 2.4, mod_rewrite module = on
+
+in httpd.conf - allowoverride from none to all 
+documentroot = htdocs/sibertest/public
